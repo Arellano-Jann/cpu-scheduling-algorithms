@@ -1,0 +1,13 @@
+1) What is the difference between the 3 tools?   
+
+
+
+2) You're working on an ubuntu system when you notice that the system has become less responsive to your clicks. What could be happening in memory to slow the system? Which of the 3 commands would be most appropriate to check if that's the case?  
+
+
+
+3) You're working on an ubuntu system when you get a message saying that there isn't enough free memory to save your text file. Would this indicate that RAM or your HDD is full? Which command of the 3 above would be the fastest way to check the cause of the message?  
+
+
+
+4) You would like to know how often processes are being interrupted or page faulting, and how much memory has been reserved to swap pages on and off RAM. Which command is best for that? What entries would you look at?  
