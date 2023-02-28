@@ -8,12 +8,12 @@
 
 **General Instructions and Hints**: 
 
--Name files exactly as described in the documentation below.<br/> 
--All functions should match the assignment descriptions. Do not add parameters, change names, or return different values. <br/> 
--All output should match exactly what is in this document (including spacing!). If it does not match, it will not pass the autograder.<br/> 
--When part 1 is done, open a terminal and cd to your github repo, wherever you saved it. Do the following: _git add ._ then _git commit -m <whatevermessageyouwant>_ then _git push_.<br/>
--All work should be your own. <br/>
--You may use the following libraries for part 1 (though you do not have to use any other than sys):
+- Name files exactly as described in the documentation below.<br/> 
+- All functions should match the assignment descriptions. Do not add parameters, change names, or return different values. <br/> 
+- All output should match exactly what is in this document (including spacing!). If it does not match, it will not pass the autograder.<br/> 
+- When part 1 is done, open a terminal and cd to your github repo, wherever you saved it. Do the following: _git add ._ then _git commit -m <whatevermessageyouwant>_ then _git push_.<br/>
+- All work should be your own. <br/>
+- You may use the following libraries for part 1 (though you do not have to use any other than sys):
 ```
 numpy
 pandasunders
