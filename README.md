@@ -44,17 +44,18 @@ Your program should consist of 4 functions: Main, ShortestRemainingSort, RoundRo
 
 Name your program _batchSchedulingComparison.py_
 
-You can implement sorting in many ways in Python: you can take your data and create a tuple (or other object) and sort a list of those objects, 
-you can zip, sort and unzip lists, you can create parallel lists and sort (not recommended since mistakes with this method are common), etc. 
-In each of the sort functions, it is up to you to decide what data structures and process you use to implement the sorting algorithm. 
-If you want to create a list of dict objects containing each of the variables and sort by key or item, that's fine. 
-Or you could create three separate lists (one for PID, one for arrival time, and one for burst time) and sort them using zip/unzip. 
-There are many ways to sort in python, so pick whatever makes the most sense to you.
+You can implement sorting in many ways in Python: 
+- you can take your data and create a tuple (or other object) and sort a list of those objects, 
+- you can zip, sort and unzip lists, you can create parallel lists and sort (not recommended since mistakes with this method are common), etc. 
+- In each of the sort functions, it is up to you to decide what data structures and process you use to implement the sorting algorithm. 
+- If you want to create a list of dict objects containing each of the variables and sort by key or item, that's fine. 
+- Or you could create three separate lists (one for PID, one for arrival time, and one for burst time) and sort them using zip/unzip. 
+- There are many ways to sort in python, so pick whatever makes the most sense to you.
 
 
  
 
-_main()_<br/>
+## _main()_<br/>
 
 From the terminal, the user should be able to enter the program name batchfile Name and type of process sort they would like to do. 
 
@@ -100,7 +101,9 @@ you should return 1, and print the following:
 1. The easiest way to do that is to have each of the algorithm functions return a list of the times that each process is completed at.
 2. Then you can pass that and the relevant data to ComputeStats, whose returns can be used to print the turnaround and wait times.<br/>
 
-_ComputeStat(processCompletionTimes, processArrivalTimes, processBurstTimes)_<br/>
+## _ComputeStat(processCompletionTimes, processArrivalTimes, processBurstTimes)_<br/>
+
+
 **Parameters**: accepts the time that the process would be completed at by the algorithm, accepts the time that each process arrives (I suggest using two lists)
 
 **Returns**:
@@ -122,7 +125,7 @@ This function calculates your average turnaround time and average wait time stat
 3. To calculate the average, sum each process' wait time, and divide by the number of processes. 
 - So if we only executed process 1 and 3, we would add 20 and 0, and divide by 2- the wait time of those two processes averaged (ignoring the rest of the list for simplicity) is 10.<br/>
 
-_ShortestRemainingSort(batchFileData)_<br/>
+## _ShortestRemainingSort(batchFileData)_<br/>
 
 **Parameters**: accepts all of the batchFileData from the batchfile opened in main
 
@@ -196,7 +199,7 @@ Average Process Wait Time: 13.5
 
 
 
-_RoundRobinSort(batchFileData)_ <br/>
+## _RoundRobinSort(batchFileData)_ <br/>
 
 Parameters: accepts all of the batchFileData from the batchfile opened in main
 
