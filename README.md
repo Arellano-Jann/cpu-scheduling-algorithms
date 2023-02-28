@@ -116,13 +116,13 @@ This function calculates your average turnaround time and average wait time stat
  
 1. Turnaround time is calculated by subtracting each processArrivalTime from its final processCompletionTime. 
 - For example, using FCFS process 3 takes 50 seconds to execute and arrived at time 0, so process 3 has a turnaround time of 70 because it has to wait 20 seconds for process 1 to fully execute. 
-2, To calculate the average, sum each process' turnaround time, and divide by the number of processes. 
+2. To calculate the average, sum each process' turnaround time, and divide by the number of processes. 
 - So if we only executed process 1 and 3, we would add 20 and 70 and divide by 2 - the turnaround time of those two processes averaged (ignoring the rest of the list for simplicity) is 45.
 
-1. Wait time is calculated by subtracting each processBurstTime from its processTurnaroundTime. 
+3. Wait time is calculated by subtracting each processBurstTime from its processTurnaroundTime. 
 - For example, using FCFS, we previously calculated that process 3 has a turnaround time of 70, and process 1 has a turnaround time of 20. 
-2. To calculate the waitTime for process 3, we subtract the burst time from the turnaround (70-50) and get 20; doing the same for process 1, we get 0. 
-3. To calculate the average, sum each process' wait time, and divide by the number of processes. 
+- To calculate the waitTime for process 3, we subtract the burst time from the turnaround (70-50) and get 20; doing the same for process 1, we get 0. 
+4. To calculate the average, sum each process' wait time, and divide by the number of processes. 
 - So if we only executed process 1 and 3, we would add 20 and 0, and divide by 2- the wait time of those two processes averaged (ignoring the rest of the list for simplicity) is 10.<br/>
 
 ## _ShortestRemainingSort(batchFileData)_<br/>
