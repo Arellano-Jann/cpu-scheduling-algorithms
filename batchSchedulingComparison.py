@@ -89,7 +89,7 @@ def main():
                 return 1
             avgTurnAroundTime, avgWaitTime, turnAroundTimes, waitTimes = computeStat(completionTimes, arrivalTimes, burstTimes)
             
-            print("PID ORDER OF EXECUTION:\n")
+            print("\nPID ORDER OF EXECUTION:\n")
             for i in range(len(orderOfExecution)):
                 print(orderOfExecution[i])
             print("\nAverage Process Turnaround Time: ", avgTurnAroundTime)
