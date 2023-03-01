@@ -7,8 +7,6 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
     
     for row in batchFileData: # fill arrival and burst arrays (req'd data)
         pid, arrivalTime, burstTime = row[0], row[1], row[2]
-        arrivalTimes.append(arrivalTime)
-        burstTimes.append(burstTime)
         orderOfExecution[pid] = [0, arrivalTime, burstTime]
         processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time
         
