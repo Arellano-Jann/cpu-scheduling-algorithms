@@ -30,7 +30,6 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
         current_time += 1 # current_time HAS to go first to prevent off by 1 error.
         time_list[pid][0] = current_time # update completion time
     
-    print(current_time)
     completionTimes = [x[0] for x in time_list.values()]
     arrivalTimes = [x[1] for x in time_list.values()]
     burstTimes = [x[2] for x in time_list.values()]
