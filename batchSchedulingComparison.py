@@ -1,8 +1,12 @@
 import sys
 
-def shortestRemainingSort(batchFileData):
-    arrivalQueue = []
-    return 0
+def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
+    completionTimes, arrivalTimes, burstTimes = [], [], []
+    orderOfExecution, arrivalQueue = [], []
+    
+    
+    
+    return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
 def roundRobinSort(batchFileData):
     pass
@@ -43,7 +47,8 @@ def main():
         with open(sys.argv[1]) as batchFile:
             batchFileData = batchFile.readlines() # returns a list of strings, each string is a line in the file with the newline character at the end
             
-            batchFileData = [line.strip().split(', ') for line in batchFileData] # remove \n and splits into a 2d array
+            batchFileData = [list(map(int, line.strip().split(', '))) for line in batchFileData] # remove \n and splits into a 2d array
+            batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time (index 1
             
             if sys.argv[2] == "ShortestRemaining":
                 orderOfExecution, completionTimes, arrivalTimes, burstTimes = shortestRemainingSort(batchFileData)
