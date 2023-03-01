@@ -1,13 +1,14 @@
 1) What is the difference between the 3 tools?   
-
+- vmstat displays virtual memory stats, top displays processes, and free displays free/used memory stats.
 
 
 2) You're working on an ubuntu system when you notice that the system has become less responsive to your clicks. What could be happening in memory to slow the system? Which of the 3 commands would be most appropriate to check if that's the case?  
-
+- There could be a high memory usage which slows the system down. There could also be a high swapping usage or a memory leak. The free command would be the most appropriate because it can check both the memory and swapping usage along with the caches in a simple manner. A good alternative would be the vmstat command but I find it harder to interpret because my eyes are not good. Top would also be good because you can see the percent memory usage of each process which might be what the user wants. It can be argued that both free and top are the most appropriate depending on the data that the user would like to see.
 
 
 3) You're working on an ubuntu system when you get a message saying that there isn't enough free memory to save your text file. Would this indicate that RAM or your HDD is full? Which command of the 3 above would be the fastest way to check the cause of the message?  
-
+- It would usually mean that the RAM is full. The free command which checks the memory usage would be the fastest way to check. You would have to see if the free number is low in comparison to the total and used numbers.
 
 
 4) You would like to know how often processes are being interrupted or page faulting, and how much memory has been reserved to swap pages on and off RAM. Which command is best for that? What entries would you look at?  
+- vmstat would be the best because you can see the swap in/out, blocks in/out, interrupts and context switches on a per second basis. For interrupts, you would look at the "in" column. For page faults, you would look at the "si" and "so" columns because it would indicate number of pages swapped in and out. 
