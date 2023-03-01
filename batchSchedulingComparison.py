@@ -2,15 +2,14 @@ import sys
 
 # "what is the shortest burst time that we can currently see?"
 def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
-    completionTimes, arrivalTimes, burstTimes = [], [], [] # completion acts as an auxillary array at first until calculated.
-    orderOfExecution, arrivalQueue, processes = [], [], {} # arrivalQueue contains pids that we can see
+    orderOfExecution, arrivalQueue, processes = {}, [], {} # arrivalQueue contains pids that we can see
     current_time = 0
     
     for row in batchFileData: # fill arrival and burst arrays (req'd data)
         pid, arrivalTime, burstTime = row[0], row[1], row[2]
         arrivalTimes.append(arrivalTime)
-        completionTimes.append(arrivalTime)
         burstTimes.append(burstTime)
+        orderOfExecution[pid] = [0, arrivalTime, burstTime]
         processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time
         
     # do the queues and calculate completion times, order of execution
@@ -24,10 +23,13 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
         processes[pid][2] -= 1 # decrement burst time
         if processes[pid][2] == 0:
             processes.pop(pid)
-        orderOfExecution.append(pid)
+        orderOfExecution[pid][0] = current_time
         current_time += 1
     
-    return orderOfExecution, completionTimes, arrivalTimes, burstTimes
+    completionTimes = [x[0] for x in orderOfExecution.values()]
+    arrivalTimes = [x[1] for x in orderOfExecution.values()]
+    burstTimes = [x[2] for x in orderOfExecution.values()]
+    return orderOfExecution.keys(), completionTimes, arrivalTimes, burstTimes
 
 def roundRobinSort(batchFileData):
     pass
