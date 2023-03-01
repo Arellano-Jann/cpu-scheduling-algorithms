@@ -31,9 +31,10 @@ The are both used in operating systems to determine CPU usage efficiency. <br/>
 
  **Directions**
 
-The code for this portion should be written in **Python** (trust me, it's easier than C). There is a test batchfile for this assignment located in the repo. Each line of the batchfile contains 4 comma separated values. They are: PID, Arrival Time, Burst Time (also known as execution time). PID is the process id. Arrival time is the time since the process arrived in the ready queue. Burst time is the amount of time required to fully execute the process on the CPU. Let's look at a simplified example of the batchfile:
+The code for this portion should be written in **Python** (trust me, it's easier than C). There is a test batchfile for this assignment located in the repo. Each line of the batchfile contains 4 comma separated values. They are: ***PID, Arrival Time, Burst Time*** (also known as execution time). PID is the process id. Arrival time is the time since the process arrived in the ready queue. Burst time is the amount of time required to fully execute the process on the CPU. Let's look at a simplified example of the batchfile:
  
 ```
+PID, Arrival Time, Burst Time
 1, 0, 20
 3, 0, 50
 7, 9,  4
