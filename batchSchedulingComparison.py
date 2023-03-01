@@ -1,10 +1,28 @@
 import sys
 
+# "what is the shortest burst time that we can currently see?"
 def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
-    completionTimes, arrivalTimes, burstTimes = [], [], []
-    orderOfExecution, arrivalQueue = [], []
+    completionTimes, arrivalTimes, burstTimes = [], [], [] # completion acts as an auxillary array at first until calculated.
+    orderOfExecution, arrivalQueue, processes = [], [], {} # arrivalQueue contains pids that we can see
+    current_time = 0
     
-    
+    for row in batchFileData: # fill arrival and burst arrays (req'd data)
+        pid, arrivalTime, burstTime = row[0], row[1], row[2]
+        arrivalTimes.append(arrivalTime)
+        completionTimes.append(arrivalTime)
+        burstTimes.append(burstTime)
+        processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time
+        
+    # do the queues and calculate completion times, order of execution
+    while len(processes) != 0: # while there are still processes to be executed
+        for pid, [arrival, burst] in processes.items(): # add processes to queue
+            if burst != 0 and arrival <= current_time:
+                arrivalQueue.append(pid)
+                
+        # grabs the lowest burst visible for 1 time unit
+        pid = min(arrivalQueue, key = lambda x: processes[x][2])
+        processes[pid][2] -= 1 # decrement burst time
+        current_time += 1
     
     return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
@@ -48,7 +66,7 @@ def main():
             batchFileData = batchFile.readlines() # returns a list of strings, each string is a line in the file with the newline character at the end
             
             batchFileData = [list(map(int, line.strip().split(', '))) for line in batchFileData] # remove \n and splits into a 2d array
-            batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time (index 1
+            batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time
             
             if sys.argv[2] == "ShortestRemaining":
                 orderOfExecution, completionTimes, arrivalTimes, burstTimes = shortestRemainingSort(batchFileData)
