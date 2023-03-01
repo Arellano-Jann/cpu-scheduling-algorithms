@@ -36,33 +36,46 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
     return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
 def roundRobinSort(batchFileData):
-    time_list, orderOfExecution, arrivalQueue, processes = {}, [], set(), {} # arrivalQueue contains pids that we can see
+    time_list, orderOfExecution, arrivalQueue, processes = {}, [], [], {} # arrivalQueue contains pids that we can see
+    quanta = 10
     current_time = 0
     
     for row in batchFileData: # fill arrival and burst arrays (req'd data)
         pid, arrivalTime, burstTime = row[0], row[1], row[2]
         time_list[pid] = [0, arrivalTime, burstTime]
-        processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time
+        processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time. this list is modifiable
         
     # do the queues and calculate completion times, order of execution
     while len(processes) != 0: # while there are still processes to be executed
         for pid, [arrival, burst] in processes.items(): # add processes to queue
-            if burst != 0 and arrival <= current_time:
-                arrivalQueue.add(pid)
+            if burst != 0 and arrival <= current_time and pid not in arrivalQueue:
+                arrivalQueue.append(pid)
                 
-        # grabs the lowest burst visible for 1 time unit
-        pid = min(arrivalQueue, key = lambda x: processes[x][1])
-        processes[pid][1] -= 1 # decrement burst time
-        if processes[pid][1] == 0:
-            processes.pop(pid)
-            arrivalQueue.remove(pid)
-
-        # updates order of execution            
-        if not orderOfExecution or pid != orderOfExecution[-1]:
-            orderOfExecution.append(pid)
+        # grabs the next process in the queue
+        for i in range(len(arrivalQueue)):
+            pid = arrivalQueue[i]
+            burstTime = processes[pid][1]
             
-        current_time += 1 # current_time HAS to go first to prevent off by 1 error.
-        time_list[pid][0] = current_time # update completion time
+            # update time
+            current_time += quanta if burstTime >= quanta else burstTime
+            
+            # pop if done
+            processes[pid][1] -= quanta # decrement burst time
+            if processes[pid][1] <= 0:
+                processes.pop(pid)
+                arrivalQueue.remove(pid)
+            
+            # ^ else queue it at end
+            else:
+                arrivalQueue.remove(pid)
+                arrivalQueue.append(pid)
+
+            # updates order of execution            
+            if not orderOfExecution or pid != orderOfExecution[-1]:
+                orderOfExecution.append(pid)
+            
+            time_list[pid][0] = current_time # update completion time
+            print(pid, current_time)
     
     completionTimes = [x[0] for x in time_list.values()]
     arrivalTimes = [x[1] for x in time_list.values()]
@@ -101,35 +114,34 @@ def main():
     if len(sys.argv) != 3:
         print("Please provide command line arguments when running.\npython3 batchSchedulingComparison.py batchfile.txt ShortestRemaining")
         return 1
-    try:
-        # print(sys.argv[1])
-        with open(sys.argv[1], 'r') as batchFile:
-            batchFileData = batchFile.readlines() # returns a list of strings, each string is a line in the file with the newline character at the end
+    # try:
+    with open(sys.argv[1], 'r') as batchFile:
+        batchFileData = batchFile.readlines() # returns a list of strings, each string is a line in the file with the newline character at the end
+        
+        batchFileData = [list(map(int, line.strip().split(', '))) for line in batchFileData] # remove \n and splits into a 2d array
+        batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time
+        
+        if sys.argv[2] == "ShortestRemaining":
+            orderOfExecution, completionTimes, arrivalTimes, burstTimes = shortestRemainingSort(batchFileData)
+            # shortestRemainingSort(batchFileData)
+            # print('hereFINALLY')
+        elif sys.argv[2] == "RoundRobin":
+            orderOfExecution, completionTimes, arrivalTimes, burstTimes = roundRobinSort(batchFileData)
+        else:
+            print("Unidentified sorting algorithm. Please input either ShortestRemaining or RoundRobin.")
+            return 1
+        avgTurnAroundTime, avgWaitTime, turnAroundTimes, waitTimes = computeStat(completionTimes, arrivalTimes, burstTimes)
+        
+        print("\nPID ORDER OF EXECUTION:\n")
+        for i in range(len(orderOfExecution)):
+            print(orderOfExecution[i])
+        print("\nAverage Process Turnaround Time: ", avgTurnAroundTime)
+        print("Average Process Wait Time: ", avgWaitTime)
+        return 0
             
-            batchFileData = [list(map(int, line.strip().split(', '))) for line in batchFileData] # remove \n and splits into a 2d array
-            batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time
-            
-            if sys.argv[2] == "ShortestRemaining":
-                orderOfExecution, completionTimes, arrivalTimes, burstTimes = shortestRemainingSort(batchFileData)
-                # shortestRemainingSort(batchFileData)
-                # print('hereFINALLY')
-            elif sys.argv[2] == "RoundRobin":
-                orderOfExecution, completionTimes, arrivalTimes, burstTimes = roundRobinSort(batchFileData)
-            else:
-                print("Unidentified sorting algorithm. Please input either ShortestRemaining or RoundRobin.")
-                return 1
-            avgTurnAroundTime, avgWaitTime, turnAroundTimes, waitTimes = computeStat(completionTimes, arrivalTimes, burstTimes)
-            
-            print("\nPID ORDER OF EXECUTION:\n")
-            for i in range(len(orderOfExecution)):
-                print(orderOfExecution[i])
-            print("\nAverage Process Turnaround Time: ", avgTurnAroundTime)
-            print("Average Process Wait Time: ", avgWaitTime)
-            return 0
-            
-    except Exception as err:
-        print("error: ", err)
-        print("Input batchfile not found!")
+    # except Exception as err:
+    #     print("error: ", err)
+    #     print("Input batchfile not found!")
 
 
 if __name__=="__main__":
