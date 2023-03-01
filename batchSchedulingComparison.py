@@ -36,7 +36,38 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
     return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
 def roundRobinSort(batchFileData):
-    pass
+    time_list, orderOfExecution, arrivalQueue, processes = {}, [], set(), {} # arrivalQueue contains pids that we can see
+    current_time = 0
+    
+    for row in batchFileData: # fill arrival and burst arrays (req'd data)
+        pid, arrivalTime, burstTime = row[0], row[1], row[2]
+        time_list[pid] = [0, arrivalTime, burstTime]
+        processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time
+        
+    # do the queues and calculate completion times, order of execution
+    while len(processes) != 0: # while there are still processes to be executed
+        for pid, [arrival, burst] in processes.items(): # add processes to queue
+            if burst != 0 and arrival <= current_time:
+                arrivalQueue.add(pid)
+                
+        # grabs the lowest burst visible for 1 time unit
+        pid = min(arrivalQueue, key = lambda x: processes[x][1])
+        processes[pid][1] -= 1 # decrement burst time
+        if processes[pid][1] == 0:
+            processes.pop(pid)
+            arrivalQueue.remove(pid)
+
+        # updates order of execution            
+        if not orderOfExecution or pid != orderOfExecution[-1]:
+            orderOfExecution.append(pid)
+            
+        current_time += 1 # current_time HAS to go first to prevent off by 1 error.
+        time_list[pid][0] = current_time # update completion time
+    
+    completionTimes = [x[0] for x in time_list.values()]
+    arrivalTimes = [x[1] for x in time_list.values()]
+    burstTimes = [x[2] for x in time_list.values()]
+    return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
 # Accepts 3 lists with index i corresponding to the same process and computes the avg turnaround time,  avg waiting time, turnaround time list for each process, and wait time list for each process
 def computeStat(processCompletionTimes, processArrivalTimes, processBurstTimes):
