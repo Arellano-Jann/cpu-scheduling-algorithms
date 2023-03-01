@@ -53,7 +53,7 @@ def roundRobinSort(batchFileData):
                 
         # grabs the next process in the queue
         for i in range(len(arrivalQueue)):
-            pid = arrivalQueue[i]
+            pid = arrivalQueue.pop(0)
             burstTime = processes[pid][1]
             
             # update time
@@ -63,11 +63,9 @@ def roundRobinSort(batchFileData):
             processes[pid][1] -= quanta # decrement burst time
             if processes[pid][1] <= 0:
                 processes.pop(pid)
-                arrivalQueue.remove(pid)
             
             # ^ else queue it at end
             else:
-                arrivalQueue.remove(pid)
                 arrivalQueue.append(pid)
 
             # updates order of execution            
