@@ -35,6 +35,8 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
     burstTimes = [x[2] for x in time_list.values()]
     return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
+# "which process is waiting next in the queue with the lowest pid?"
+# add logic for lowest pid and i think it's set
 def roundRobinSort(batchFileData):
     time_list, orderOfExecution, arrivalQueue, processes = {}, [], [], {} # arrivalQueue contains pids that we can see
     quanta = 10
