@@ -22,6 +22,9 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
         # grabs the lowest burst visible for 1 time unit
         pid = min(arrivalQueue, key = lambda x: processes[x][2])
         processes[pid][2] -= 1 # decrement burst time
+        if processes[pid][2] == 0:
+            processes.pop(pid)
+        orderOfExecution.append(pid)
         current_time += 1
     
     return orderOfExecution, completionTimes, arrivalTimes, burstTimes
