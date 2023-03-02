@@ -35,24 +35,27 @@ def shortestRemainingSort(batchFileData): # PID, Arrival Time, Burst Time
     burstTimes = [x[2] for x in time_list.values()]
     return orderOfExecution, completionTimes, arrivalTimes, burstTimes
 
-# "which process is waiting next in the queue with the lowest pid?"
-# add logic for lowest pid and i think it's set
+# "which process is waiting next in the queue? if multiple, which has lowest pid?"
 def roundRobinSort(batchFileData):
     time_list, orderOfExecution, arrivalQueue, processes = {}, [], [], {} # arrivalQueue contains pids that we can see
     quanta = 10
     current_time = 0
+    to_add = []
     
     for row in batchFileData: # fill arrival and burst arrays (req'd data)
         pid, arrivalTime, burstTime = row[0], row[1], row[2]
         time_list[pid] = [0, arrivalTime, burstTime]
-        processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time. this list is modifiable
+        processes[pid] = [arrivalTime, burstTime] # burst time is the remaining time. this list is constantly updated
         
     # do the queues and calculate completion times, order of execution
     while len(processes) != 0: # while there are still processes to be executed
         for pid, [arrival, burst] in processes.items(): # add processes to queue
-            if burst != 0 and arrival <= current_time and pid not in arrivalQueue:
+            if burst != 0 and arrival <= current_time and pid not in arrivalQueue and pid not in to_add:
                 arrivalQueue.append(pid)
-                
+        # adds the rest of recently executed to the queue
+        arrivalQueue.extend(to_add)
+        to_add = []
+        
         # grabs the next process in the queue
         for i in range(len(arrivalQueue)):
             pid = arrivalQueue.pop(0)
@@ -63,19 +66,15 @@ def roundRobinSort(batchFileData):
             
             # pop if done
             processes[pid][1] -= quanta # decrement burst time
-            if processes[pid][1] <= 0:
-                processes.pop(pid)
+            if processes[pid][1] <= 0: processes.pop(pid)
             
-            # ^ else queue it at end
-            else:
-                arrivalQueue.append(pid)
+            # else queue it at end
+            else: to_add.append(pid)
 
-            # updates order of execution            
-            if not orderOfExecution or pid != orderOfExecution[-1]:
-                orderOfExecution.append(pid)
+            # updates order of execution
+            orderOfExecution.append(pid)
             
             time_list[pid][0] = current_time # update completion time
-            print(pid, current_time)
     
     completionTimes = [x[0] for x in time_list.values()]
     arrivalTimes = [x[1] for x in time_list.values()]
