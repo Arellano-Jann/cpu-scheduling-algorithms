@@ -239,18 +239,18 @@ And the output (FROM MAIN BASED ON YOUR RETURNED VALUES) would be:
 PID ORDER OF EXECUTION:
 
 1
-2
 3
 7
-1
 2
+1
 3
+2
 3
 3
 3
 
-Average Process Turnaround Time: 55.25
-Average Process Wait Time: 36.25
+Average Process Turnaround Time: 47.75
+Average Process Wait Time: 26.25
 ```
 
 
