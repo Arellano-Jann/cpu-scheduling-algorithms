@@ -113,34 +113,34 @@ def main():
     if len(sys.argv) != 3:
         print("Please provide command line arguments when running.\npython3 batchSchedulingComparison.py batchfile.txt ShortestRemaining")
         return 1
-    # try:
-    with open(sys.argv[1], 'r') as batchFile:
-        batchFileData = batchFile.readlines() # returns a list of strings, each string is a line in the file with the newline character at the end
-        
-        batchFileData = [list(map(int, line.strip().split(', '))) for line in batchFileData] # remove \n and splits into a 2d array
-        batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time
-        
-        if sys.argv[2] == "ShortestRemaining":
-            orderOfExecution, completionTimes, arrivalTimes, burstTimes = shortestRemainingSort(batchFileData)
-            # shortestRemainingSort(batchFileData)
-            # print('hereFINALLY')
-        elif sys.argv[2] == "RoundRobin":
-            orderOfExecution, completionTimes, arrivalTimes, burstTimes = roundRobinSort(batchFileData)
-        else:
-            print("Unidentified sorting algorithm. Please input either ShortestRemaining or RoundRobin.")
-            return 1
-        avgTurnAroundTime, avgWaitTime, turnAroundTimes, waitTimes = computeStat(completionTimes, arrivalTimes, burstTimes)
-        
-        print("\nPID ORDER OF EXECUTION:\n")
-        for i in range(len(orderOfExecution)):
-            print(orderOfExecution[i])
-        print("\nAverage Process Turnaround Time: ", avgTurnAroundTime)
-        print("Average Process Wait Time: ", avgWaitTime)
-        return 0
+    try:
+        with open(sys.argv[1], 'r') as batchFile:
+            batchFileData = batchFile.readlines() # returns a list of strings, each string is a line in the file with the newline character at the end
             
-    # except Exception as err:
-    #     print("error: ", err)
-    #     print("Input batchfile not found!")
+            batchFileData = [list(map(int, line.strip().split(', '))) for line in batchFileData] # remove \n and splits into a 2d array
+            batchFileData.sort(key = lambda x: int(x[1])) # sort by arrival time
+            
+            if sys.argv[2] == "ShortestRemaining":
+                orderOfExecution, completionTimes, arrivalTimes, burstTimes = shortestRemainingSort(batchFileData)
+                # shortestRemainingSort(batchFileData)
+                # print('hereFINALLY')
+            elif sys.argv[2] == "RoundRobin":
+                orderOfExecution, completionTimes, arrivalTimes, burstTimes = roundRobinSort(batchFileData)
+            else:
+                print("Unidentified sorting algorithm. Please input either ShortestRemaining or RoundRobin.")
+                return 1
+            avgTurnAroundTime, avgWaitTime, turnAroundTimes, waitTimes = computeStat(completionTimes, arrivalTimes, burstTimes)
+            
+            print("\nPID ORDER OF EXECUTION:\n")
+            for i in range(len(orderOfExecution)):
+                print(orderOfExecution[i])
+            print("\nAverage Process Turnaround Time: ", avgTurnAroundTime)
+            print("Average Process Wait Time: ", avgWaitTime)
+            return 0
+                
+    except Exception as err:
+        # print("error: ", err)
+        print("Input batchfile not found!")
 
 
 if __name__=="__main__":
